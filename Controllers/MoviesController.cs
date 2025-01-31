@@ -37,7 +37,7 @@ namespace MovieManagementApi.Controllers
 
         // Add a new movie
         [HttpPost]
-        public async Task<IActionResult> CreateMovie([FromBody] Movie movie)
+        public async Task<IActionResult> CreateMovie([FromBody] Movie? movie)
         {
             if (movie == null)
             {
@@ -50,7 +50,7 @@ namespace MovieManagementApi.Controllers
 
         // Update an existing movie
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMovie(int id, [FromBody] Movie movie)
+        public async Task<IActionResult> UpdateMovie(int id, [FromBody] Movie? movie)
         {
             if (id != movie.Id)
             {

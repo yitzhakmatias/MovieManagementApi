@@ -25,13 +25,13 @@ namespace MovieManagementApi.Core.Services
         }
 
         // Add a new movie
-        public async Task AddMovieAsync(Movie movie)
+        public async Task AddMovieAsync(Movie? movie)
         {
             await _movieRepository.AddMovieAsync(movie);
         }
 
         // Update an existing movie
-        public async Task UpdateMovieAsync(Movie movie)
+        public async Task UpdateMovieAsync(Movie? movie)
         {
             await _movieRepository.UpdateMovieAsync(movie);
         }

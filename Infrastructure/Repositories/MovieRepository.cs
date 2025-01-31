@@ -19,19 +19,19 @@ namespace MovieManagementApi.Infrastructure.Repositories
             return await _context.Movies.Include(m => m.Actors).Include(m => m.Ratings).ToListAsync();
         }
 
-        public async Task<Movie> GetMovieByIdAsync(int id)
+        public async Task<Movie?> GetMovieByIdAsync(int id)
         {
             return await _context.Movies.Include(m => m.Actors).Include(m => m.Ratings)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task AddMovieAsync(Movie movie)
+        public async Task AddMovieAsync(Movie? movie)
         {
             await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateMovieAsync(Movie movie)
+        public async Task UpdateMovieAsync(Movie? movie)
         {
             _context.Movies.Update(movie);
             await _context.SaveChangesAsync();
