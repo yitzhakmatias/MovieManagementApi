@@ -12,15 +12,23 @@ namespace MovieManagementApi.Controllers
     {
         private readonly MovieService _movieService;
         private readonly ActorService _actorService;
-        private const string API_SECRET_KEY = "YourHardCodedApiSecret";  // Hardcoded secret API key
+        private const string API_SECRET_KEY = "123456";  // Hardcoded secret API key
 
+        /// <summary>
+        /// MoviesController
+        /// </summary>
+        /// <param name="movieService"></param>
+        /// <param name="actorService"></param>
         public MoviesController(MovieService movieService, ActorService actorService)
         {
             _movieService = movieService;
             _actorService = actorService;
         }
 
-        // Get all movies
+        /// <summary>
+        /// Get all movies
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [SwaggerOperation(Summary = "Get all movies", Description = "Retrieve a list of all movies including actors and ratings.")]
         [SwaggerResponse(200, "List of all movies", typeof(List<Movie>))]
@@ -60,6 +68,13 @@ namespace MovieManagementApi.Controllers
         }
 
         // Update a movie
+        /// <summary>
+        /// Update the details of an existing movie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="movie"></param>
+        /// <param name="apiKey"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [SwaggerOperation(Summary = "Update a movie", Description = "Update the details of an existing movie.")]
         [SwaggerResponse(204, "Movie updated")]
@@ -80,6 +95,12 @@ namespace MovieManagementApi.Controllers
         }
 
         // Delete a movie
+        /// <summary>
+        /// Remove a movie from the database by ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="apiKey"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [SwaggerOperation(Summary = "Delete a movie", Description = "Remove a movie from the database by ID.")]
         [SwaggerResponse(204, "Movie deleted")]
@@ -96,7 +117,11 @@ namespace MovieManagementApi.Controllers
             return NoContent();
         }
 
-        // Search movies by name
+        /// <summary>
+        /// Search movies by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet("search/movies")]
         [SwaggerOperation(Summary = "Search movies by name", Description = "Search for movies by title.")]
         [SwaggerResponse(200, "List of movies", typeof(List<Movie>))]
@@ -109,7 +134,12 @@ namespace MovieManagementApi.Controllers
             return Ok(movies);
         }
 
-        // Search actors by name
+        
+        /// <summary>
+        /// Search actors by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [HttpGet("search/actors")]
         [SwaggerOperation(Summary = "Search actors by name", Description = "Search for actors by name.")]
         [SwaggerResponse(200, "List of actors", typeof(List<Actor>))]
@@ -122,7 +152,12 @@ namespace MovieManagementApi.Controllers
             return Ok(actors);
         }
 
-        // Get all movies an actor has been in
+        
+        /// <summary>
+        /// Get all movies an actor has been in
+        /// </summary>
+        /// <param name="actorId"></param>
+        /// <returns></returns>
         [HttpGet("{actorId}/movies")]
         [SwaggerOperation(Summary = "Get all movies an actor has been in", Description = "Retrieve all movies an actor has appeared in.")]
         [SwaggerResponse(200, "List of movies", typeof(List<Movie>))]
@@ -135,7 +170,12 @@ namespace MovieManagementApi.Controllers
             return Ok(actor.Movies); // Movies the actor has appeared in
         }
 
-        // Get all actors in a movie
+        
+        /// <summary>
+        /// Get all actors in a movie
+        /// </summary>
+        /// <param name="movieId"></param>
+        /// <returns></returns>
         [HttpGet("{movieId}/actors")]
         [SwaggerOperation(Summary = "Get all actors in a movie", Description = "Retrieve all actors that appeared in a given movie.")]
         [SwaggerResponse(200, "List of actors", typeof(List<Actor>))]
