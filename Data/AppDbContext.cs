@@ -16,16 +16,31 @@ namespace MovieManagementApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Optional: Fluent API for configuring relationships or constraints
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Movie>().HasMany(m => m.Actors).WithMany(a => a.Movies);
-            modelBuilder.Entity<Movie>().HasMany(m => m.Ratings).WithOne(r => r.Movie);
-            modelBuilder.Entity<MovieRating>().HasOne(r => r.Movie).WithMany(m => m.Ratings).HasForeignKey(r => r.MovieId);
+            // Configure Many-to-Many relationship between Movies and Actors
+            modelBuilder.Entity<Movie>()
+                .HasMany(m => m.Actors)
+                .WithMany(a => a.Movies)
+                .UsingEntity(j => j.ToTable("ActorMovie"));  // EF Core will create a join table named "MovieActor"
 
-            // Seed Data
-            modelBuilder.Entity<Movie>().HasData(SeedData.GetMovies());
-            modelBuilder.Entity<Actor>().HasData(SeedData.GetActors());
-            modelBuilder.Entity<MovieRating>().HasData(SeedData.GetRatings());
+            // Configure One-to-Many relationship between Movie and MovieRatings
+            modelBuilder.Entity<Movie>()
+                .HasMany(m => m.Ratings)
+                .WithOne(r => r.Movie)
+                .HasForeignKey(r => r.MovieId);
+
+            modelBuilder.Entity<MovieRating>()
+                .HasOne(r => r.Movie)
+                .WithMany(m => m.Ratings)
+                .HasForeignKey(r => r.MovieId);
+
+            // Seed data for Movies, Actors, and MovieRatings
+            var actors = SeedData.GetActors();
+            var movies = SeedData.GetMovies(actors); // Pass actors to seed movies
+            var ratings = SeedData.GetRatings();
+
+            modelBuilder.Entity<Movie>().HasData(movies);
+            modelBuilder.Entity<Actor>().HasData(actors);
+            modelBuilder.Entity<MovieRating>().HasData(ratings);
         }
     }
 

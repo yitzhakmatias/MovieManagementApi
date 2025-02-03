@@ -2,10 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using MovieManagementApi.Core.Interfaces;
 using MovieManagementApi.Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
+using MovieManagementApi.Core.Middleware;
 using MovieManagementApi.Core.Services;
 using MovieManagementApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -13,7 +15,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=movies.db")); // You can replace this with any DB provider (SQL Server, SQLite, etc.)
 
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IActorRepository, ActorRepository>();
 builder.Services.AddScoped<MovieService>();
+builder.Services.AddScoped<ActorService>();
 
 // Add Swagger services
 builder.Services.AddSwaggerGen(options =>
@@ -39,7 +43,6 @@ builder.Services.AddControllers()
     });
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -47,10 +50,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Movie Management API v1");
-        c.RoutePrefix = string.Empty; // Makes Swagger UI available at root URL
+        c.RoutePrefix = "/swagger"; // Makes Swagger UI available at root URL
     });
 }
 
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 

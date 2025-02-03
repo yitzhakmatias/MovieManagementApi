@@ -41,5 +41,10 @@ namespace MovieManagementApi.Core.Services
         {
             await _movieRepository.DeleteMovieAsync(id);
         }
+
+        public async Task<object?> SearchMoviesByNameAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
