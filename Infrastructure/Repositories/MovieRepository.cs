@@ -14,9 +14,13 @@ namespace MovieManagementApi.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<List<Movie>> GetAllMoviesAsync()
+        public async Task<List<Movie?>> GetAllMoviesAsync()
         {
-            return await _context.Movies.Include(m => m.Actors).Include(m => m.Ratings).ToListAsync();
+            return await _context.Movies
+                .AsNoTracking()
+                .Include(m => m.Actors)
+                .Include(m => m.Ratings)
+                .ToListAsync();
         }
 
         public async Task<Movie?> GetMovieByIdAsync(int id)

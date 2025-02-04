@@ -7,7 +7,16 @@ using MovieManagementApi.Core.Services;
 using MovieManagementApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")  // React frontend URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();  // Allow credentials if needed (e.g., cookies, Authorization headers)
+    });
+});
 
 // Add services to the container.
 
@@ -35,14 +44,18 @@ builder.Services.AddSwaggerGen(options =>
     options.IgnoreObsoleteProperties();
 });
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
+builder.Services.AddControllers();
+    /*.AddJsonOptions(options =>
     {
         // Enable handling of circular references
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-    });
-
+        
+        // Optional: Use camelCase for JSON property names
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });*/
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
+app.UseCors("AllowReactApp");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -55,6 +68,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ApiKeyMiddleware>();
+
 app.UseAuthorization();
 app.MapControllers();
 
