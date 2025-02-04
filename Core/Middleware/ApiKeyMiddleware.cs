@@ -1,13 +1,17 @@
-﻿namespace MovieManagementApi.Core.Middleware
+﻿using Microsoft.Extensions.Options;
+using MovieManagementApi.Core.Entities;
+
+namespace MovieManagementApi.Core.Middleware
 {
     public class ApiKeyMiddleware
     {
         private readonly RequestDelegate _next;
-        private const string API_SECRET_KEY = "123456";  // Hardcoded secret API key
+        private static string _apiSecretKey = "123456";
 
-        public ApiKeyMiddleware(RequestDelegate next)
+        public ApiKeyMiddleware(RequestDelegate next,IOptions<AppSettings> options)
         {
             _next = next;
+            _apiSecretKey=options.Value.API_SECRET_KEY; 
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -15,7 +19,7 @@
             if (context.Request.Headers.ContainsKey("X-API-KEY"))
             {
                 var apiKey = context.Request.Headers["X-API-KEY"];
-                if (apiKey != API_SECRET_KEY)
+                if (apiKey != _apiSecretKey)
                 {
                     // Unauthorized if the API Key is incorrect
                     context.Response.StatusCode = 401;

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieManagementApi.Core.Interfaces;
 using MovieManagementApi.Infrastructure.Repositories;
 using Microsoft.OpenApi.Models;
+using MovieManagementApi.Core.Entities;
 using MovieManagementApi.Core.Middleware;
 using MovieManagementApi.Core.Services;
 using MovieManagementApi.Data;
@@ -43,6 +44,8 @@ builder.Services.AddSwaggerGen(options =>
     options.IgnoreObsoleteActions();
     options.IgnoreObsoleteProperties();
 });
+// Add configuration for API_SECRET_KEY
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

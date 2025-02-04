@@ -5,6 +5,7 @@ using MovieManagementApi.Core.Services;
 using MovieManagementApi.Core.Dtos;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace MovieManagementApi.Controllers
 {
@@ -15,18 +16,21 @@ namespace MovieManagementApi.Controllers
         private readonly MovieService _movieService;
         private readonly ActorService _actorService;
         private readonly IMapper _mapper;
-        private const string API_SECRET_KEY = "123456";  // Hardcoded secret API key
+        private readonly string _apiSecretKey;  // Hardcoded secret API key
 
         /// <summary>
         /// MoviesController
         /// </summary>
         /// <param name="movieService"></param>
         /// <param name="actorService"></param>
-        public MoviesController(MovieService movieService, ActorService actorService, IMapper mapper)
+        /// <param name="mapper"></param>
+        /// <param name="options"></param>
+        public MoviesController(MovieService movieService, ActorService actorService, IMapper mapper, IOptions<AppSettings> options)
         {
             _movieService = movieService;
             _actorService = actorService;
             _mapper = mapper;
+            _apiSecretKey=options.Value.API_SECRET_KEY; 
         }
 
         /// <summary>
@@ -66,7 +70,7 @@ namespace MovieManagementApi.Controllers
         [SwaggerResponse(401, "Unauthorized")]
         public async Task<IActionResult> CreateMovie([FromBody] Movie movie, [FromHeader] string apiKey)
         {
-            if (apiKey != API_SECRET_KEY) return Unauthorized("Invalid API Key");
+            if (apiKey != _apiSecretKey) return Unauthorized("Invalid API Key");
 
             if (movie == null) return BadRequest("Movie is null");
 
@@ -84,7 +88,7 @@ namespace MovieManagementApi.Controllers
         [SwaggerResponse(401, "Unauthorized")]
         public async Task<IActionResult> UpdateMovie(int id, [FromBody] Movie movie, [FromHeader] string apiKey)
         {
-            if (apiKey != API_SECRET_KEY) return Unauthorized("Invalid API Key");
+            if (apiKey != _apiSecretKey) return Unauthorized("Invalid API Key");
 
             if (id != movie.Id) return BadRequest("Movie ID mismatch");
 
@@ -103,7 +107,7 @@ namespace MovieManagementApi.Controllers
         [SwaggerResponse(401, "Unauthorized")]
         public async Task<IActionResult> DeleteMovie(int id, [FromHeader] string apiKey)
         {
-            if (apiKey != API_SECRET_KEY) return Unauthorized("Invalid API Key");
+            if (apiKey != _apiSecretKey) return Unauthorized("Invalid API Key");
 
             var movie = await _movieService.GetMovieByIdAsync(id);
             if (movie == null) return NotFound("Movie not found");
