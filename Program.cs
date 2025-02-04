@@ -45,14 +45,6 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddControllers();
-    /*.AddJsonOptions(options =>
-    {
-        // Enable handling of circular references
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        
-        // Optional: Use camelCase for JSON property names
-        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-    });*/
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 app.UseCors("AllowReactApp");

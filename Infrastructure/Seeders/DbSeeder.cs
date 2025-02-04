@@ -20,23 +20,6 @@ namespace MovieManagementApi.Infrastructure.Seeders
                 new Movie { Id = 10, Title = "Avengers: Endgame", Description = "Superhero Action", ReleaseDate = new DateTime(2019, 4, 26) }
             };
 
-            // Manually assign actors to movies
-            /*movies[0].Actors.Add(actors[0]); // Inception - Leonardo DiCaprio
-            movies[1].Actors.Add(actors[0]); // Interstellar - Leonardo DiCaprio
-            movies[2].Actors.Add(actors[1]); // The Dark Knight - Christian Bale
-            movies[3].Actors.Add(actors[2]); // The Matrix - Keanu Reeves
-            movies[4].Actors.Add(actors[3]); // Fight Club - Brad Pitt
-            movies[5].Actors.Add(actors[3]); // Pulp Fiction - Brad Pitt
-            movies[6].Actors.Add(actors[5]); // Gladiator - Russell Crowe
-            movies[7].Actors.Add(actors[6]); // Titanic - Kate Winslet
-            movies[8].Actors.Add(actors[7]); // The Godfather - Al Pacino
-            movies[9].Actors.Add(actors[8]); // Avengers: Endgame - Robert Downey Jr.
-
-            // Adding more actors to movies (example)
-            movies[0].Actors.Add(actors[1]); // Inception - Christian Bale
-            movies[4].Actors.Add(actors[9]); // Fight Club - Chris Evans
-            movies[6].Actors.Add(actors[2]); // Gladiator - Keanu Reeves*/
-
             return movies;
         }
 
