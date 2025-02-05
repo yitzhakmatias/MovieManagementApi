@@ -30,8 +30,19 @@ dotnet run
 
 The API will be accessible at:
 
-    http://localhost:5000
+    http://localhost:7082
 
+## API Endpoints
+
+- `GET /api/movies`: Retrieve all movies
+- `GET /api/movies/{id}`: Retrieve a specific movie by ID
+- `POST /api/movies`: Create a new movie
+- `PUT /api/movies/{id}`: Update an existing movie
+- `DELETE /api/movies/{id}`: Delete a movie
+- `GET /api/movies/search/movies`: Search movies by name
+- `GET /api/movies/search/actors`: Search actors by name
+- `GET /api/movies/{actorId}/movies`: Get all movies an actor has been in
+- `GET /api/movies/{movieId}/actors`: Get all actors in a movie
 Docker Setup:
 
     The repository contains a Docker configuration to containerize the application.
